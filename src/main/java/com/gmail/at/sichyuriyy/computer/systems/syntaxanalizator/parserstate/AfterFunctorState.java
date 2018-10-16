@@ -1,9 +1,6 @@
 package com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate;
 
-import com.gmail.at.sichyuriyy.computer.systems.lab2.PolishToken;
 import com.gmail.at.sichyuriyy.computer.systems.token.Token;
-
-import static com.gmail.at.sichyuriyy.computer.systems.lab2.PolishTokenType.OPEN_PARENTHESIS;
 
 public class AfterFunctorState extends AbstractParserState {
     public AfterFunctorState(StateData state) {
@@ -18,7 +15,6 @@ public class AfterFunctorState extends AbstractParserState {
 
     @Override
     protected ParserState readParenthesisOpen(Token token) {
-        getState().operations.add(new PolishToken(token.getValue(), OPEN_PARENTHESIS));
         return new ExpressionBeginningState(getState());
     }
 

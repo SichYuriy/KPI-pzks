@@ -1,6 +1,5 @@
 package com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate;
 
-import com.gmail.at.sichyuriyy.computer.systems.lab2.PolishToken;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxError;
 import com.gmail.at.sichyuriyy.computer.systems.token.Token;
 
@@ -10,5 +9,4 @@ public interface ParserState {
     ParserState readNextToken(Token token);
 
     List<SyntaxError> getFoundErrors();
-    List<PolishToken> getPolishNotation();
 }

@@ -1,6 +1,5 @@
 package com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate;
 
-import com.gmail.at.sichyuriyy.computer.systems.lab2.PolishTokenType;
 import com.gmail.at.sichyuriyy.computer.systems.token.Token;
 
 public class AfterValueState extends AbstractParserState {
@@ -23,31 +22,26 @@ public class AfterValueState extends AbstractParserState {
 
     @Override
     protected ParserState readParenthesisClose(Token token) {
-        pushUntilOpenParenthesis();
         return new AfterValueState(getState());
     }
 
     @Override
     protected ParserState readPlusOperator(Token token) {
-        addOperatorToPolishNotation(token.getValue(), PolishTokenType.BINARY_PLUS);
         return new AfterOperatorState(getState());
     }
 
     @Override
     protected ParserState readMinusOperator(Token token) {
-        addOperatorToPolishNotation(token.getValue(), PolishTokenType.BINARY_MINUS);
         return new AfterOperatorState(getState());
     }
 
     @Override
     protected ParserState readMultiplyOperator(Token token) {
-        addOperatorToPolishNotation(token.getValue(), PolishTokenType.MULTIPLY);
         return new AfterOperatorState(getState());
     }
 
     @Override
     protected ParserState readDivideOperator(Token token) {
-        addOperatorToPolishNotation(token.getValue(), PolishTokenType.DIVIDE);
         return new AfterOperatorState(getState());
     }
 
@@ -73,9 +67,6 @@ public class AfterValueState extends AbstractParserState {
     protected ParserState readEndOfExpression(Token token) {
         if (getState().openParenthesisCount > 0) {
             reportError(token, "Expected ) before end of expression");
-        }
-        while (!getState().operations.empty()) {
-            getState().polishOutput.add(getState().operations.pop());
         }
         return this;
     }
