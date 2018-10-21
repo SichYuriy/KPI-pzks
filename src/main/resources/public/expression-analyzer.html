@@ -1,0 +1,11 @@
+<form ng-submit="vm.analyzeExpression()">
+    <label for="expression">Input expression to analyze:</label><br/>
+    <input type="text" ng-model="vm.expression" id="expression" style="width: 500px">
+    <input type="submit" value="Run"/>
+</form>
+<hr/>
+<div ng-if="vm.analysisResult">
+    <span>Was analyzed: {{vm.analysisResult.expression}}</span><br/>
+    <div ng-if="vm.analysisResult.errors.length == 0">No errors were found</div>
+    <div ng-repeat="error in vm.analysisResult.errors">At position {{error.position}}[{{error.tokenValue}}]: {{error.errorDescription}}</div>
+</div>
