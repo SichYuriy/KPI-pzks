@@ -1,6 +1,9 @@
 package com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate;
 
+import com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishToken;
 import com.gmail.at.sichyuriyy.computer.systems.token.Token;
+
+import static com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType.*;
 
 public class AfterOperatorState extends AbstractParserState {
     public AfterOperatorState(StateData state) {
@@ -9,11 +12,13 @@ public class AfterOperatorState extends AbstractParserState {
 
     @Override
     protected ParserState readConstant(Token token) {
+        getState().polishNotation.add(new PolishToken(token.getValue(), VALUE));
         return new AfterValueState(getState());
     }
 
     @Override
     protected ParserState readParenthesisOpen(Token token) {
+        getState().operations.add(new PolishToken(token.getValue(), OPEN_PARENTHESIS));
         return new ExpressionBeginningState(getState());
     }
 
@@ -49,16 +54,19 @@ public class AfterOperatorState extends AbstractParserState {
 
     @Override
     protected ParserState readVariable(Token token) {
+        getState().polishNotation.add(new PolishToken(token.getValue(), VALUE));
         return new AfterValueState(getState());
     }
 
     @Override
     protected ParserState readSinFunction(Token token) {
+        addOperatorToPolishNotation(token.getValue(), SIN);
         return new AfterFunctorState(getState());
     }
 
     @Override
     protected ParserState readCosFunction(Token token) {
+        addOperatorToPolishNotation(token.getValue(), COS);
         return new AfterFunctorState(getState());
     }
 

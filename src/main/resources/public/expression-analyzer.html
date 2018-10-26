@@ -8,4 +8,9 @@
     <span>Was analyzed: {{vm.analysisResult.expression}}</span><br/>
     <div ng-if="vm.analysisResult.errors.length == 0">No errors were found</div>
     <div ng-repeat="error in vm.analysisResult.errors">At position {{error.position}}[{{error.tokenValue}}]: {{error.errorDescription}}</div>
+    <hr/>
+    Polish notation:
+    <div>{{vm.analysisResult.polishNotation}}</div>
 </div>
+<hr/>
+<div id="tree-simple" style="width:100%; height: 400px"></div>

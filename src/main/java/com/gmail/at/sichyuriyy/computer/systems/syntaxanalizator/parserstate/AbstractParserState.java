@@ -1,5 +1,7 @@
 package com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate;
 
+import com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishToken;
+import com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxError;
 import com.gmail.at.sichyuriyy.computer.systems.token.Token;
 import com.gmail.at.sichyuriyy.computer.systems.token.TokenType;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import static com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType.OPEN_PARENTHESIS;
 import static java.util.Map.entry;
 
 @Data
@@ -59,6 +62,11 @@ public abstract class AbstractParserState implements ParserState {
         return state.foundErrors;
     }
 
+    @Override
+    public List<PolishToken> getPolishNotation() {
+        return state.polishNotation;
+    }
+
     private ParserState readParenthesisOpenAndIncrementCount(Token token) {
         incrementOpenParenthesisCount();
         return readParenthesisOpen(token);
@@ -95,4 +103,31 @@ public abstract class AbstractParserState implements ParserState {
     }
 
     protected abstract ParserState readEndOfExpression(Token token);
+
+    protected void addOperatorToPolishNotation(String value, PolishTokenType type) {
+        if (!state.foundErrors.isEmpty()) {
+            return;
+        }
+        while (!state.operations.isEmpty()
+                && !state.operations.peek().getType().equals(OPEN_PARENTHESIS)
+                && state.operations.peek().getType().getPriority() >= type.getPriority()) {
+            state.polishNotation.add(state.operations.pop());
+        }
+        state.operations.add(new PolishToken(value, type));
+    }
+
+    protected void pushUntilOpenParenthesis() {
+        if (!state.foundErrors.isEmpty()) {
+            return;
+        }
+        boolean parenthesisDeleted = false;
+        while (!parenthesisDeleted) {
+            PolishToken token = state.operations.pop();
+            if (token.getType().equals(OPEN_PARENTHESIS)) {
+                parenthesisDeleted = true;
+            } else {
+                state.polishNotation.add(token);
+            }
+        }
+    }
 }

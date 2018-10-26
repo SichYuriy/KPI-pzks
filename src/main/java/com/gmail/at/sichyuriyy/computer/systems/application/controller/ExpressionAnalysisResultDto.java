@@ -1,5 +1,6 @@
 package com.gmail.at.sichyuriyy.computer.systems.application.controller;
 
+import com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishToken;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxError;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,4 +17,6 @@ import java.util.List;
 public class ExpressionAnalysisResultDto {
     private String expression;
     private List<SyntaxError> errors = new ArrayList<>();
+    private List<PolishToken> polishNotation;
+    private TreeNodeDto root;
 }
