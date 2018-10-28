@@ -19,4 +19,5 @@ public class ExpressionAnalysisResultDto {
     private List<SyntaxError> errors = new ArrayList<>();
     private List<PolishToken> polishNotation;
     private TreeNodeDto root;
+    private TreeNodeDto optimizedRoot;
 }

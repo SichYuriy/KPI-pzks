@@ -9,6 +9,8 @@ public class TreeNode {
     private TreeNode left;
     private TreeNode right;
 
+    private Integer optimizedHeight;
+
     public TreeNode(PolishToken polishToken) {
         this.polishToken = polishToken;
     }

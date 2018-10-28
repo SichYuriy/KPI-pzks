@@ -22,13 +22,21 @@ angular.module('app').controller('ExpressionAnalyzerController', function ($http
                 vm.analysisResult.polishNotation = response.data.polishNotation
                     .map((token) => token.value)
                     .reduce((s1, s2) => s1 + ',' + s2, "");
-                let simple_chart_config = {
+                let unoptimizedRootConfig = {
                     chart: {
-                        container: "#tree-simple"
+                        container: "#unoptimized-tree"
                     },
                     nodeStructure: response.data.root
                 };
-                new Treant(simple_chart_config);
+                new Treant(unoptimizedRootConfig);
+
+                let optimizedRootConfig = {
+                    chart: {
+                        container: "#optimized-tree"
+                    },
+                    nodeStructure: response.data.optimizedRoot
+                };
+                new Treant(optimizedRootConfig);
             }
         });
     }

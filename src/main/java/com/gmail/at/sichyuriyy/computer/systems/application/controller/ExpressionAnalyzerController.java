@@ -4,6 +4,7 @@ import com.gmail.at.sichyuriyy.computer.systems.Expression;
 import com.gmail.at.sichyuriyy.computer.systems.ExpressionReader;
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeBuilder;
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeNode;
+import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeOptimizer;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxError;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxParser;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate.ParserState;
@@ -22,6 +23,7 @@ public class ExpressionAnalyzerController {
     private ExpressionReader expressionReader = new ExpressionReader();
     private TreeBuilder treeBuilder = new TreeBuilder();
     private TreeTransformer treeTransformer = new TreeTransformer();
+    private TreeOptimizer treeOptimizer = new TreeOptimizer();
 
     @GetMapping("/analyze")
     public ExpressionAnalysisResultDto analyze(@RequestParam String expression) {
@@ -30,10 +32,16 @@ public class ExpressionAnalyzerController {
         ParserState parseResult = syntaxParser.parseExpression(tokenExpression);
         List<SyntaxError> syntaxErrors = parseResult.getFoundErrors();
         if (!syntaxErrors.isEmpty()) {
-            return new ExpressionAnalysisResultDto(exp, syntaxErrors, new ArrayList<>(), null);
+            return new ExpressionAnalysisResultDto(exp, syntaxErrors, new ArrayList<>(), null, null);
         } else {
             TreeNode root = treeBuilder.buildTree(parseResult.getPolishNotation());
-            return new ExpressionAnalysisResultDto(exp, syntaxErrors, parseResult.getPolishNotation(), treeTransformer.toDto(root));
+            return ExpressionAnalysisResultDto.builder()
+                    .expression(exp)
+                    .errors(syntaxErrors)
+                    .polishNotation(parseResult.getPolishNotation())
+                    .root(treeTransformer.toDto(root))
+                    .optimizedRoot(treeTransformer.toDto(treeOptimizer.optimize(root)))
+                    .build();
         }
     }
 }
