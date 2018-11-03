@@ -4,7 +4,8 @@ import com.gmail.at.sichyuriyy.computer.systems.Expression;
 import com.gmail.at.sichyuriyy.computer.systems.ExpressionReader;
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeBuilder;
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeNode;
-import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeOptimizer;
+import com.gmail.at.sichyuriyy.computer.systems.expressiontree.optimizer.AllVariantsTreeOptimizer;
+import com.gmail.at.sichyuriyy.computer.systems.expressiontree.optimizer.TreeOptimizer;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxError;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxParser;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate.ParserState;
@@ -23,7 +24,7 @@ public class ExpressionAnalyzerController {
     private ExpressionReader expressionReader = new ExpressionReader();
     private TreeBuilder treeBuilder = new TreeBuilder();
     private TreeTransformer treeTransformer = new TreeTransformer();
-    private TreeOptimizer treeOptimizer = new TreeOptimizer();
+    private TreeOptimizer treeOptimizer = new AllVariantsTreeOptimizer();
 
     @GetMapping("/analyze")
     public ExpressionAnalysisResultDto analyze(@RequestParam String expression) {
