@@ -12,5 +12,23 @@ public enum TokenType {
     SIN_FUNCTION,
     COS_FUNCTION,
     UNKNOWN_TOKEN,
-    END_OF_EXPRESSION
+    END_OF_EXPRESSION;
+
+    public static boolean isPlusOrMinus(Token token) {
+        return token.getType().equals(PLUS_OPERATOR)
+                || token.getType().equals(MINUS_OPERATOR);
+    }
+
+    public static boolean isValue(Token token) {
+        return token.getType().equals(CONSTANT)
+                || token.getType().equals(VARIABLE);
+    }
+
+    public static boolean isOpenParen(Token token) {
+        return token.getType().equals(PARENTHESIS_OPEN);
+    }
+
+    public static boolean isCloseParen(Token token) {
+        return token.getType().equals(PARENTHESIS_CLOSE);
+    }
 }
