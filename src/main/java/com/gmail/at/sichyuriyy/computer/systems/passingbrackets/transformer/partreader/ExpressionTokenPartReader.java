@@ -25,7 +25,11 @@ public class ExpressionTokenPartReader implements TokenPartReader {
     public int readTokenPart(ArrayList<Token> tokens, int nextTokenIndex, boolean multiply, ParenthesisToken outputToken) {
         int closingParen = findExpressionEndIndex(tokens, nextTokenIndex);
         ParenthesisExpression exp = transformer.transform(new ArrayList<>(tokens.subList(nextTokenIndex + 1, closingParen)));
-        outputToken.addExpression(multiply, exp);
+        if (exp.getTerms().size() == 1 && exp.getTerms().get(0).getPartsCount() == 1) {
+            outputToken.addAll(exp.getTerms().get(0));
+        } else {
+            outputToken.addExpression(multiply, exp);
+        }
         return closingParen + 1;
     }
 }

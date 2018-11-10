@@ -97,4 +97,20 @@ public class ParenthesisExpressionTransformerTest {
 
         assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    public void transform_shouldDeleteBrackets() {
+        Expression exp = expressionReader.readExpression("((a))");
+
+        ParenthesisExpression actual = subject.transform(exp);
+
+        ParenthesisExpression expected = new ParenthesisExpression();
+        expected.setTerms(List.of(
+                ParenthesisToken.builder()
+                        .multiplyVars(List.of("a"))
+                        .build()
+        ));
+
+        assertThat(actual).isEqualTo(expected);
+    }
 }

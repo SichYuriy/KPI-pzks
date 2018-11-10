@@ -55,4 +55,22 @@ public class ParenthesisToken {
             divideFunctions.add(func);
         }
     }
+
+    public int getPartsCount() {
+        return multiplyVars.size()
+                + divideVars.size()
+                + multiplyExpressions.size()
+                + divideExpressions.size()
+                + multiplyFunctions.size()
+                + divideFunctions.size();
+    }
+
+    public void addAll(ParenthesisToken parenthesisToken) {
+        this.getMultiplyVars().addAll(parenthesisToken.getMultiplyVars());
+        this.getDivideVars().addAll(parenthesisToken.getDivideVars());
+        this.getMultiplyExpressions().addAll(parenthesisToken.getMultiplyExpressions());
+        this.getDivideExpressions().addAll(parenthesisToken.getDivideExpressions());
+        this.getMultiplyFunctions().addAll(parenthesisToken.getMultiplyFunctions());
+        this.getDivideFunctions().addAll(parenthesisToken.getDivideFunctions());
+    }
 }
