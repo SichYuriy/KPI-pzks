@@ -1,6 +1,6 @@
 package com.gmail.at.sichyuriyy.computer.systems.util;
 
-public class StringUtil {
+public class StringUtils {
     public static String deleteWhiteSpaces(String str) {
         StringBuilder result = new StringBuilder();
         for (char c: str.toCharArray()) {

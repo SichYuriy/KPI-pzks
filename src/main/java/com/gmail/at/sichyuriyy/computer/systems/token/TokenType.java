@@ -31,4 +31,22 @@ public enum TokenType {
     public static boolean isCloseParen(Token token) {
         return token.getType().equals(PARENTHESIS_CLOSE);
     }
+
+    public static boolean isMultiplyOrDivide(Token token) {
+        return token.getType().equals(MULTIPLY_OPERATOR)
+                || token.getType().equals(DIVIDE_OPERATOR);
+    }
+
+    public static boolean isDivide(Token token) {
+        return token.getType().equals(DIVIDE_OPERATOR);
+    }
+
+    public static boolean isMinus(Token token) {
+        return token.getType().equals(MINUS_OPERATOR);
+    }
+
+    public static boolean isFunction(Token token) {
+        return token.getType().equals(SIN_FUNCTION)
+                || token.getType().equals(COS_FUNCTION);
+    }
 }

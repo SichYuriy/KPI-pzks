@@ -9,7 +9,7 @@ import java.util.List;
 
 import static com.gmail.at.sichyuriyy.computer.systems.token.TokenType.END_OF_EXPRESSION;
 import static com.gmail.at.sichyuriyy.computer.systems.token.TokenType.UNKNOWN_TOKEN;
-import static com.gmail.at.sichyuriyy.computer.systems.util.StringUtil.deleteWhiteSpaces;
+import static com.gmail.at.sichyuriyy.computer.systems.util.StringUtils.deleteWhiteSpaces;
 
 public class ExpressionReader {
 

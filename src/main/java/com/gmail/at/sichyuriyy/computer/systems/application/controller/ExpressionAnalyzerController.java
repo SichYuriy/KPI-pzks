@@ -9,7 +9,7 @@ import com.gmail.at.sichyuriyy.computer.systems.expressiontree.optimizer.TreeOpt
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxError;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxParser;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate.ParserState;
-import com.gmail.at.sichyuriyy.computer.systems.util.StringUtil;
+import com.gmail.at.sichyuriyy.computer.systems.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +28,7 @@ public class ExpressionAnalyzerController {
 
     @GetMapping("/analyze")
     public ExpressionAnalysisResultDto analyze(@RequestParam String expression) {
-        String exp = StringUtil.deleteWhiteSpaces(expression);
+        String exp = StringUtils.deleteWhiteSpaces(expression);
         Expression tokenExpression = expressionReader.readExpression(exp);
         ParserState parseResult = syntaxParser.parseExpression(tokenExpression);
         List<SyntaxError> syntaxErrors = parseResult.getFoundErrors();
