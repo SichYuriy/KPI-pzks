@@ -42,7 +42,9 @@ public class ParenthesisExpression {
         if (!(object instanceof ParenthesisExpression)) {
             return false;
         }
-        return this.terms.containsAll(((ParenthesisExpression) object).getTerms());
+        ParenthesisExpression other = (ParenthesisExpression) object;
+        return this.terms.containsAll(other.getTerms())
+                && other.getTerms().containsAll(this.terms);
     }
 
     @Override

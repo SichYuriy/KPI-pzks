@@ -180,7 +180,13 @@ public class ParenthesisToken {
                 && this.multiplyFunctions.containsAll(other.multiplyFunctions)
                 && this.divideVars.containsAll(other.divideVars)
                 && this.divideExpressions.containsAll(other.divideExpressions)
-                && this.divideFunctions.containsAll(other.divideFunctions);
+                && this.divideFunctions.containsAll(other.divideFunctions)
+                && other.multiplyVars.containsAll(this.multiplyVars)
+                && other.multiplyExpressions.containsAll(this.multiplyExpressions)
+                && other.multiplyFunctions.containsAll(this.multiplyFunctions)
+                && other.divideVars.containsAll(this.divideVars)
+                && other.divideExpressions.containsAll(this.divideExpressions)
+                && other.divideFunctions.containsAll(this.divideFunctions);
     }
 
     @Override
