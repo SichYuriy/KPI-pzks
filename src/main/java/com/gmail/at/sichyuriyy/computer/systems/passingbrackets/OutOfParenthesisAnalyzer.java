@@ -27,17 +27,20 @@ public class OutOfParenthesisAnalyzer {
 
     private Set<ParenthesisExpression> calculateEqualForms(ParenthesisExpression expression) {
         Set<ParenthesisExpression> firstLevelResult = getEqualFormsByTakingTokensOut(expression);
-        Set<ParenthesisExpression> result = new HashSet<>(firstLevelResult);
+        Set<ParenthesisExpression> result = new LinkedHashSet<>();
         firstLevelResult.forEach(
-                exp -> result.addAll(getAllForms(exp))
+                exp -> {
+                    result.add(exp);
+                    result.addAll(getAllForms(exp));
+                }
         );
 
         for (int i = 0; i < expression.getTerms().size(); i++) {
             ParenthesisToken original = expression.getTerms().get(i);
             Set<ParenthesisToken> equalTokens = getAllEqualTokens(original);
-            for (ParenthesisToken equalToken: equalTokens) {
+            for (ParenthesisToken equalToken : equalTokens) {
                 expression.getTerms().set(i, equalToken);
-                result.addAll(getEqualFormsByTakingTokensOut(expression));
+                result.addAll(getAllForms(expression));
             }
             expression.getTerms().set(i, original);
         }
@@ -46,10 +49,10 @@ public class OutOfParenthesisAnalyzer {
     }
 
     private Set<ParenthesisToken> getAllEqualTokens(ParenthesisToken token) {
-        Set<ParenthesisToken> result = new HashSet<>();
+        Set<ParenthesisToken> result = new LinkedHashSet<>();
         for (int i = 0; i < token.getMultiplyExpressions().size(); i++) {
             ParenthesisExpression exp = token.getMultiplyExpressions().get(i);
-            for (ParenthesisExpression equalExpression: getAllForms(exp)) {
+            for (ParenthesisExpression equalExpression : getAllForms(exp)) {
                 ParenthesisToken clone = token.makeClone();
                 clone.getMultiplyExpressions().remove(i);
                 if (equalExpression.getTerms().size() == 1) {
@@ -62,7 +65,7 @@ public class OutOfParenthesisAnalyzer {
         }
         for (int i = 0; i < token.getDivideFunctions().size(); i++) {
             ParenthesisExpression exp = token.getDivideExpressions().get(i);
-            for (ParenthesisExpression equalExpression: getAllForms(exp)) {
+            for (ParenthesisExpression equalExpression : getAllForms(exp)) {
                 ParenthesisToken clone = token.makeClone();
                 clone.getDivideExpressions().remove(i);
                 clone.getDivideExpressions().add(equalExpression);
@@ -71,7 +74,7 @@ public class OutOfParenthesisAnalyzer {
         }
         for (int i = 0; i < token.getMultiplyFunctions().size(); i++) {
             FunctionExpression func = token.getMultiplyFunctions().get(i);
-            for (ParenthesisExpression equalExpression: getAllForms(func.getExpression())) {
+            for (ParenthesisExpression equalExpression : getAllForms(func.getExpression())) {
                 ParenthesisToken clone = token.makeClone();
                 clone.getMultiplyFunctions().get(i).setExpression(equalExpression);
                 result.add(clone);
@@ -79,7 +82,7 @@ public class OutOfParenthesisAnalyzer {
         }
         for (int i = 0; i < token.getDivideFunctions().size(); i++) {
             FunctionExpression func = token.getDivideFunctions().get(i);
-            for (ParenthesisExpression equalExpression: getAllForms(func.getExpression())) {
+            for (ParenthesisExpression equalExpression : getAllForms(func.getExpression())) {
                 ParenthesisToken clone = token.makeClone();
                 clone.getDivideFunctions().get(i).setExpression(equalExpression);
                 result.add(clone);
@@ -89,7 +92,7 @@ public class OutOfParenthesisAnalyzer {
     }
 
     private Set<ParenthesisExpression> getEqualFormsByTakingTokensOut(ParenthesisExpression expression) {
-        Set<ParenthesisExpression> result = new HashSet<>();
+        Set<ParenthesisExpression> result = new LinkedHashSet<>();
 
         for (int i = 0; i < expression.getTerms().size(); i++) {
             for (int j = i + 1; j < expression.getTerms().size(); j++) {

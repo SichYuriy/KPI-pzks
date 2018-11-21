@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.join;
 import static java.util.stream.Collectors.toList;
@@ -165,6 +166,33 @@ public class ParenthesisToken {
         divideFunctions.forEach(func -> result.append("/").append(func));
         divideExpressions.forEach(exp -> result.append("/(").append(exp).append(")"));
         return result.toString();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof ParenthesisToken)) {
+            return false;
+        }
+        ParenthesisToken other = (ParenthesisToken) object;
+        return this.negative == other.negative
+                && this.multiplyVars.containsAll(other.multiplyVars)
+                && this.multiplyExpressions.containsAll(other.multiplyExpressions)
+                && this.multiplyFunctions.containsAll(other.multiplyFunctions)
+                && this.divideVars.containsAll(other.divideVars)
+                && this.divideExpressions.containsAll(other.divideExpressions)
+                && this.divideFunctions.containsAll(other.divideFunctions);
+    }
+
+    @Override
+    public int hashCode() {
+        int multiplyVarsHash = multiplyVars.stream().mapToInt(Object::hashCode).sum();
+        int multiplyExpressionsHash = multiplyExpressions.stream().mapToInt(Object::hashCode).sum();
+        int multiplyFunctionsHash = multiplyFunctions.stream().mapToInt(Object::hashCode).sum();
+        int divideVarsHash = divideVars.stream().mapToInt(Object::hashCode).sum();
+        int divideExpressionsHash = divideExpressions.stream().mapToInt(Object::hashCode).sum();
+        int divideFunctionsHash = divideFunctions.stream().mapToInt(Object::hashCode).sum();
+        return Objects.hash(this.negative, multiplyVarsHash, multiplyExpressionsHash,
+                multiplyFunctionsHash, divideVarsHash, divideExpressionsHash, divideFunctionsHash);
     }
 
 }

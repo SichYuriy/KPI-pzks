@@ -36,4 +36,20 @@ public class ParenthesisExpression {
         }
         return result.toString();
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof ParenthesisExpression)) {
+            return false;
+        }
+        return this.terms.containsAll(((ParenthesisExpression) object).getTerms());
+    }
+
+    @Override
+    public int hashCode() {
+        return terms.stream()
+                .mapToInt(ParenthesisToken::hashCode)
+                .sum();
+    }
+
 }

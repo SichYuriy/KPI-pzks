@@ -10,7 +10,6 @@ import com.gmail.at.sichyuriyy.computer.systems.passingbrackets.OutOfParenthesis
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxError;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxParser;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate.ParserState;
-import com.gmail.at.sichyuriyy.computer.systems.token.reader.TokenReader;
 import com.gmail.at.sichyuriyy.computer.systems.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -52,10 +50,11 @@ public class ExpressionAnalyzerController {
     }
 
     @GetMapping("/pass-brackets")
-    public Set<String> passBrackets(@RequestParam String expression) {
+    public List<String> passBrackets(@RequestParam String expression) {
         Expression tokenExpression = expressionReader.readExpression(expression);
-        return outOfParenthesisAnalyzer.getAllForms(tokenExpression).stream()
+        var result = outOfParenthesisAnalyzer.getAllForms(tokenExpression);
+        return result.stream()
                 .map(Object::toString)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 }
