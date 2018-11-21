@@ -5,6 +5,7 @@ import com.gmail.at.sichyuriyy.computer.systems.ExpressionReader;
 import com.gmail.at.sichyuriyy.computer.systems.passingbrackets.transformer.ParenthesisExpressionTransformer;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,23 +21,24 @@ public class ParenthesisExpressionTransformerTest {
         ParenthesisExpression actual = subject.transform(exp);
 
         ParenthesisExpression twoPlusToExp = new ParenthesisExpression();
-        twoPlusToExp.setTerms(List.of(
+        twoPlusToExp.setTerms(new ArrayList<>(List.of(
                 ParenthesisToken.builder()
                         .multiplyVars(List.of("2"))
                         .build(),
                 ParenthesisToken.builder()
                         .multiplyVars(List.of("2"))
-                        .build()));
+                        .build()
+        )));
         FunctionExpression functionExpression = new FunctionExpression("sin", twoPlusToExp);
 
         ParenthesisExpression aMinusBExp = new ParenthesisExpression();
-        aMinusBExp.setTerms(List.of(
+        aMinusBExp.setTerms(new ArrayList<>(List.of(
                 ParenthesisToken.builder().multiplyVars(List.of("a")).build(),
                 ParenthesisToken.builder().multiplyVars(List.of("b")).negative(true).build()
-        ));
+        )));
 
         ParenthesisExpression expected = new ParenthesisExpression();
-        expected.setTerms(List.of(
+        expected.setTerms(new ArrayList<>(List.of(
                 ParenthesisToken.builder()
                         .multiplyVars(List.of("2"))
                         .divideVars(List.of("3"))
@@ -49,7 +51,7 @@ public class ParenthesisExpressionTransformerTest {
                         .multiplyVars(List.of("3"))
                         .multiplyExpressions(List.of(aMinusBExp))
                         .build()
-        ));
+        )));
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -60,17 +62,17 @@ public class ParenthesisExpressionTransformerTest {
         ParenthesisExpression actual = subject.transform(exp);
 
         ParenthesisExpression aPlusBExp = new ParenthesisExpression();
-        aPlusBExp.setTerms(List.of(
+        aPlusBExp.setTerms(new ArrayList<>(List.of(
                 ParenthesisToken.builder()
                         .multiplyVars(List.of("a"))
                         .build(),
                 ParenthesisToken.builder()
                         .multiplyVars(List.of("b"))
                         .build()
-        ));
+        )));
 
         ParenthesisExpression aMinusBExp = new ParenthesisExpression();
-        aMinusBExp.setTerms(List.of(
+        aMinusBExp.setTerms(new ArrayList<>(List.of(
                 ParenthesisToken.builder()
                         .multiplyVars(List.of("a"))
                         .build(),
@@ -78,10 +80,10 @@ public class ParenthesisExpressionTransformerTest {
                         .negative(true)
                         .multiplyVars(List.of("b"))
                         .build()
-        ));
+        )));
 
         ParenthesisExpression expected = new ParenthesisExpression();
-        expected.setTerms(List.of(
+        expected.setTerms(new ArrayList<>(List.of(
                 ParenthesisToken.builder()
                         .negative(true)
                         .multiplyExpressions(List.of(aPlusBExp, aMinusBExp))
@@ -93,7 +95,7 @@ public class ParenthesisExpressionTransformerTest {
                         .negative(true)
                         .multiplyVars(List.of("c"))
                         .build()
-        ));
+        )));
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -105,11 +107,11 @@ public class ParenthesisExpressionTransformerTest {
         ParenthesisExpression actual = subject.transform(exp);
 
         ParenthesisExpression expected = new ParenthesisExpression();
-        expected.setTerms(List.of(
+        expected.setTerms(new ArrayList<>(List.of(
                 ParenthesisToken.builder()
                         .multiplyVars(List.of("a"))
                         .build()
-        ));
+        )));
 
         assertThat(actual).isEqualTo(expected);
     }

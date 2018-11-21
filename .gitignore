@@ -78,3 +78,5 @@ fabric.properties
 .settings
 
 log.txt
+
+node_modules/

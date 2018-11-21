@@ -8,4 +8,9 @@ import lombok.Data;
 public class FunctionExpression {
     private String functor;
     private ParenthesisExpression expression;
+
+    @Override
+    public String toString() {
+        return functor + "(" + expression + ")";
+    }
 }

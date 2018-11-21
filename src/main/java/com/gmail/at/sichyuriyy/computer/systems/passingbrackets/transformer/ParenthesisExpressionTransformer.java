@@ -30,7 +30,7 @@ public class ParenthesisExpressionTransformer {
 
     public ParenthesisExpression transform(ArrayList<Token> tokens) {
         int nextTokenIndex = 0;
-        List<ParenthesisToken> output = new ArrayList<>();
+        ArrayList<ParenthesisToken> output = new ArrayList<>();
         while (nextTokenIndex != tokens.size()) {
             NextToken nextToken = readNextToken(tokens, nextTokenIndex);
             nextTokenIndex = nextToken.nextTokenIndex;
