@@ -40,7 +40,6 @@ public class AllVariantsTreeOptimizer extends AbstractOperationsInRowOptimizer {
             }
             nextLeafToTake = fillLevelWithLeafs(prevLevel, orderedLeafs, nextLeafToTake);
 
-
             prevLevel = currentLevel;
             currentLevel = new LinkedList<>();
         }
