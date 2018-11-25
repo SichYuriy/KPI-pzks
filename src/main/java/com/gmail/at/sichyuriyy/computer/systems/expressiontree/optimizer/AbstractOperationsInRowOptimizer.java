@@ -12,9 +12,16 @@ public abstract class AbstractOperationsInRowOptimizer implements TreeOptimizer 
     @Override
     public TreeNode optimize(TreeNode node) {
         if (!node.getPolishToken().getType().equals(PolishTokenType.BINARY_PLUS)
-                && !node.getPolishToken().getType().equals(PolishTokenType.MULTIPLY)) {
+                && !node.getPolishToken().getType().equals(PolishTokenType.MULTIPLY)
+                && !node.getPolishToken().getType().equals(PolishTokenType.BINARY_MINUS)
+                && !node.getPolishToken().getType().equals(PolishTokenType.DIVIDE)) {
             return optimizeChildrenOnly(node);
         }
+        if (node.getPolishToken().getType().equals(PolishTokenType.BINARY_MINUS)
+                || node.getPolishToken().getType().equals(PolishTokenType.DIVIDE)) {
+            return optimizeDivideOrMinusRow(node);
+        }
+
         PolishToken operationToken =  node.getPolishToken();
         PolishTokenType operation = operationToken.getType();
         int operationsInARowCount = calculateOperationsInARow(node, operation);
@@ -28,6 +35,42 @@ public abstract class AbstractOperationsInRowOptimizer implements TreeOptimizer 
 
         calculateHeightOfOperations(result, operation);
         return result;
+    }
+
+    private TreeNode optimizeDivideOrMinusRow(TreeNode node) {
+        PolishTokenType currentType = node.getPolishToken().getType();
+        if (!node.getLeft().getPolishToken().getType().equals(currentType)) {
+            return optimizeChildrenOnly(node);
+        }
+        ArrayList<TreeNode> leafs = getLeftRowLeafs(node);
+        TreeNode root = new TreeNode(new PolishToken(node.getPolishToken().getValue(), currentType));
+        root.setLeft(leafs.get(leafs.size() - 1));
+        leafs.remove(leafs.size() - 1);
+        PolishTokenType reverseType = currentType.equals(PolishTokenType.BINARY_MINUS) ?
+                PolishTokenType.BINARY_PLUS : PolishTokenType.MULTIPLY;
+        String reverseValue = currentType.equals(PolishTokenType.BINARY_MINUS) ? "+" : "*";
+        PolishToken reverseToken = new PolishToken(reverseValue, reverseType);
+        TreeNode currentNode = root;
+        for (int i = 0; i < leafs.size() - 1; i++) {
+            TreeNode rightChild = new TreeNode(reverseToken);
+            rightChild.setLeft(leafs.get(i));
+            currentNode.setRight(rightChild);
+            currentNode = rightChild;
+        }
+        currentNode.setRight(leafs.get(leafs.size() - 1));
+        return optimizeChildrenOnly(root);
+    }
+
+    private ArrayList<TreeNode> getLeftRowLeafs(TreeNode node) {
+        var tokenType = node.getPolishToken().getType();
+        var currentNode = node;
+        ArrayList<TreeNode> leafs = new ArrayList<>();
+        while (currentNode.getPolishToken().getType().equals(tokenType)) {
+            leafs.add(currentNode.getRight());
+            currentNode = currentNode.getLeft();
+        }
+        leafs.add(currentNode);
+        return leafs;
     }
 
     protected abstract TreeNode optimizeOperationsInARow(int operationsCount, ArrayList<TreeNode> orderedLeafs, PolishToken operation);

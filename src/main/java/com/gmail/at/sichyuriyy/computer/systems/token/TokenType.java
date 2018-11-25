@@ -1,5 +1,7 @@
 package com.gmail.at.sichyuriyy.computer.systems.token;
 
+import com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType;
+
 public enum TokenType {
     CONSTANT,
     PARENTHESIS_OPEN,
