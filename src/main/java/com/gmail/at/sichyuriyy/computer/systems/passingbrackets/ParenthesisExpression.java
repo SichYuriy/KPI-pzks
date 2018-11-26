@@ -54,4 +54,35 @@ public class ParenthesisExpression {
                 .sum();
     }
 
+    public ParenthesisExpression multiply(ParenthesisExpression other) {
+        ArrayList<ParenthesisToken> resultTerms = new ArrayList<>();
+        for (ParenthesisToken token1: this.getTerms()) {
+            for (ParenthesisToken token2: other.getTerms()) {
+                resultTerms.add(token1.multiply(token2));
+            }
+        }
+        return new ParenthesisExpression(resultTerms);
+    }
+
+    public ParenthesisExpression multiplyToken(ParenthesisToken token) {
+        ArrayList<ParenthesisToken> resultTerms = new ArrayList<>();
+        for (ParenthesisToken term: this.getTerms()) {
+            ParenthesisToken resultToken = new ParenthesisToken();
+            resultToken.setNegative(term.isNegative() ^ token.isNegative());
+            resultToken.addAll(term);
+            resultToken.addAll(token);
+            resultTerms.add(resultToken);
+        }
+        return new ParenthesisExpression(resultTerms);
+    }
+
+    public ParenthesisExpression divideEach(ParenthesisExpression divExp) {
+        ArrayList<ParenthesisToken> resultTerms = new ArrayList<>();
+        for (ParenthesisToken token: this.getTerms()) {
+            ParenthesisToken clone = token.makeClone();
+            clone.getDivideExpressions().add(divExp);
+            resultTerms.add(clone);
+        }
+        return new ParenthesisExpression(resultTerms);
+    }
 }
