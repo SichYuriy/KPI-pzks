@@ -11,8 +11,7 @@ import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeBuilder;
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeNode;
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.optimizer.AllVariantsTreeOptimizer;
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.optimizer.TreeOptimizer;
-import com.gmail.at.sichyuriyy.computer.systems.passingbrackets.OutOfParenthesisAnalyzer;
-import com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType;
+import com.gmail.at.sichyuriyy.computer.systems.openingbrackets.OpenBracketsAnalyzer;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxError;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxParser;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate.ParserState;
@@ -21,7 +20,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType.*;
@@ -36,7 +37,7 @@ public class ExpressionAnalyzerController {
     private TreeBuilder treeBuilder = new TreeBuilder();
     private TreeTransformer treeTransformer = new TreeTransformer();
     private TreeOptimizer treeOptimizer = new AllVariantsTreeOptimizer();
-    private OutOfParenthesisAnalyzer outOfParenthesisAnalyzer = new OutOfParenthesisAnalyzer();
+    private OpenBracketsAnalyzer outOfParenthesisAnalyzer = new OpenBracketsAnalyzer();
 
     @GetMapping("/analyze")
     public ExpressionAnalysisResultDto analyze(@RequestParam String expression) {
@@ -59,12 +60,12 @@ public class ExpressionAnalyzerController {
     }
 
     @GetMapping("/pass-brackets")
-    public List<String> passBrackets(@RequestParam String expression) {
+    public LinkedHashSet<String> passBrackets(@RequestParam String expression) {
         Expression tokenExpression = expressionReader.readExpression(expression);
         var result = outOfParenthesisAnalyzer.getAllForms(tokenExpression);
         return result.stream()
                 .map(Object::toString)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @GetMapping("/simulate")

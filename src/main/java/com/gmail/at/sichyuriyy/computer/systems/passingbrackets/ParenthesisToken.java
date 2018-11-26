@@ -88,6 +88,15 @@ public class ParenthesisToken {
         this.getDivideFunctions().addAll(parenthesisToken.getDivideFunctions());
     }
 
+    public void addAllReverse(ParenthesisToken parenthesisToken) {
+        this.getMultiplyVars().addAll(parenthesisToken.getDivideVars());
+        this.getDivideVars().addAll(parenthesisToken.getMultiplyVars());
+        this.getMultiplyExpressions().addAll(parenthesisToken.getDivideExpressions());
+        this.getDivideExpressions().addAll(parenthesisToken.getMultiplyExpressions());
+        this.getMultiplyFunctions().addAll(parenthesisToken.getDivideFunctions());
+        this.getDivideFunctions().addAll(parenthesisToken.getMultiplyFunctions());
+    }
+
     public ParenthesisToken getCommon(ParenthesisToken other) {
         ParenthesisToken result = new ParenthesisToken();
         result.setMultiplyVars(getCommon(this.getMultiplyVars(), other.getMultiplyVars()));
@@ -214,4 +223,24 @@ public class ParenthesisToken {
                 multiplyFunctionsHash, divideVarsHash, divideExpressionsHash, divideFunctionsHash);
     }
 
+    public ParenthesisToken extractConstant() {
+        ParenthesisToken token = new ParenthesisToken();
+        token.getMultiplyVars().addAll(this.multiplyVars);
+        token.getDivideVars().addAll(this.divideVars);
+        token.getMultiplyFunctions().addAll(this.multiplyFunctions);
+        token.getDivideFunctions().addAll(this.divideFunctions);
+        this.multiplyVars = new ArrayList<>();
+        this.divideVars = new ArrayList<>();
+        this.multiplyFunctions = new ArrayList<>();
+        this.divideFunctions = new ArrayList<>();
+        return token;
+    }
+
+    public ParenthesisToken multiply(ParenthesisToken other) {
+        ParenthesisToken result = new ParenthesisToken();
+        result.setNegative(this.negative ^ other.negative);
+        result.addAll(this);
+        result.addAll(other);
+        return result;
+    }
 }
