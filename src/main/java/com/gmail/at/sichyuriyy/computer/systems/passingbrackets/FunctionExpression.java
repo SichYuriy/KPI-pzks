@@ -9,6 +9,10 @@ public class FunctionExpression {
     private String functor;
     private ParenthesisExpression expression;
 
+    public FunctionExpression makeClone() {
+        return new FunctionExpression(functor, expression.makeClone());
+    }
+
     @Override
     public String toString() {
         return functor + "(" + expression + ")";

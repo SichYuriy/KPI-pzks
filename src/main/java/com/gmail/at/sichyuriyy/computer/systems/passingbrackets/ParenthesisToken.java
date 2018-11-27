@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.lang.String.join;
 import static java.util.stream.Collectors.toList;
@@ -130,7 +131,16 @@ public class ParenthesisToken {
     public ParenthesisToken makeClone() {
         ParenthesisToken clone = new ParenthesisToken();
         clone.setNegative(this.negative);
-        clone.addAll(this);
+        clone.getMultiplyVars().addAll(this.getMultiplyVars());
+        clone.getDivideVars().addAll(this.getDivideVars());
+        clone.multiplyExpressions = this.getMultiplyExpressions()
+                .stream().map(ParenthesisExpression::makeClone).collect(Collectors.toList());
+        clone.divideExpressions = this.getDivideExpressions()
+                .stream().map(ParenthesisExpression::makeClone).collect(Collectors.toList());
+        clone.multiplyFunctions = this.multiplyFunctions
+                .stream().map(FunctionExpression::makeClone).collect(Collectors.toList());
+        clone.divideFunctions = this.divideFunctions
+                .stream().map(FunctionExpression::makeClone).collect(Collectors.toList());
         return clone;
     }
 
