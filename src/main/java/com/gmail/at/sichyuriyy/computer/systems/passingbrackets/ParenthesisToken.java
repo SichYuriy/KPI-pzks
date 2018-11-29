@@ -96,7 +96,7 @@ public class ParenthesisToken {
         result.setDivideExpressions(getCommon(this.getDivideExpressions(), other.getDivideExpressions()));
         result.setMultiplyFunctions(getCommon(this.getMultiplyFunctions(), other.getMultiplyFunctions()));
         result.setDivideFunctions(getCommon(this.getDivideFunctions(), other.getDivideFunctions()));
-        return result;
+        return result.makeClone();
     }
 
     private <E> List<E> getCommon(List<E> list1, List<E> list2) {
@@ -106,9 +106,12 @@ public class ParenthesisToken {
     }
 
     private <E> List<E> extract(List<E> list1, List<E> list2) {
-        return list1.stream()
-                .filter(el -> !list2.contains(el))
-                .collect(toList());
+        list1 = new ArrayList<>(list1);
+        list2 = new ArrayList<>(list2);
+        for (E el: list2) {
+            list1.remove(el);
+        }
+        return list1;
     }
 
     public ParenthesisToken extract(ParenthesisToken extractToken) {
@@ -120,7 +123,7 @@ public class ParenthesisToken {
         result.setDivideExpressions(extract(this.getDivideExpressions(), extractToken.getDivideExpressions()));
         result.setMultiplyFunctions(extract(this.getMultiplyFunctions(), extractToken.getMultiplyFunctions()));
         result.setDivideFunctions(extract(this.getDivideFunctions(), extractToken.getDivideFunctions()));
-        return result;
+        return result.makeClone();
     }
 
     public boolean isExpression() {

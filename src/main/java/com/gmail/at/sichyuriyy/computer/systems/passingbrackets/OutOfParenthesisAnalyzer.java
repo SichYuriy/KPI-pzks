@@ -9,20 +9,13 @@ public class OutOfParenthesisAnalyzer {
 
     private ParenthesisExpressionTransformer transformer = new ParenthesisExpressionTransformer();
 
-    private Map<ParenthesisExpression, Set<ParenthesisExpression>> equalForms = new HashMap<>();
-
     public Set<ParenthesisExpression> getAllForms(Expression expression) {
         ParenthesisExpression parenthesisExpression = transformer.transform(expression);
         return getAllForms(parenthesisExpression);
     }
 
     private Set<ParenthesisExpression> getAllForms(ParenthesisExpression parenthesisExpression) {
-        Set<ParenthesisExpression> result = this.equalForms.get(parenthesisExpression);
-        if (result == null) {
-            result = this.calculateEqualForms(parenthesisExpression);
-        }
-        equalForms.put(parenthesisExpression, result);
-        return result;
+        return this.calculateEqualForms(parenthesisExpression);
     }
 
     private Set<ParenthesisExpression> calculateEqualForms(ParenthesisExpression expression) {
@@ -40,7 +33,8 @@ public class OutOfParenthesisAnalyzer {
             Set<ParenthesisToken> equalTokens = getAllEqualTokens(original);
             for (ParenthesisToken equalToken : equalTokens) {
                 expression.getTerms().set(i, equalToken);
-                result.addAll(getAllForms(expression));
+                result.add(expression.makeClone());
+                result.addAll(getAllForms(expression.makeClone()));
             }
             expression.getTerms().set(i, original);
         }
@@ -63,7 +57,7 @@ public class OutOfParenthesisAnalyzer {
                 result.add(clone);
             }
         }
-        for (int i = 0; i < token.getDivideFunctions().size(); i++) {
+        for (int i = 0; i < token.getDivideExpressions().size(); i++) {
             ParenthesisExpression exp = token.getDivideExpressions().get(i);
             for (ParenthesisExpression equalExpression : getAllForms(exp)) {
                 ParenthesisToken clone = token.makeClone();
@@ -128,6 +122,11 @@ public class OutOfParenthesisAnalyzer {
 
     private void add(ParenthesisExpression exp, ParenthesisToken token) {
         if (token.isExpression()) {
+            if (token.isNegative()) {
+                for (ParenthesisToken term: token.getMultiplyExpressions().get(0).getTerms()) {
+                    term.setNegative(!term.isExpression());
+                }
+            }
             exp.getTerms().addAll(token.getMultiplyExpressions().get(0).getTerms());
         } else {
             exp.getTerms().add(token);
