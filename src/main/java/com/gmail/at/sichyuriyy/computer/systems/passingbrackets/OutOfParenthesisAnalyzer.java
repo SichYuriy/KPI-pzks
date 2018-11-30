@@ -124,7 +124,7 @@ public class OutOfParenthesisAnalyzer {
         if (token.isExpression()) {
             if (token.isNegative()) {
                 for (ParenthesisToken term: token.getMultiplyExpressions().get(0).getTerms()) {
-                    term.setNegative(!term.isExpression());
+                    term.setNegative(!term.isNegative());
                 }
             }
             exp.getTerms().addAll(token.getMultiplyExpressions().get(0).getTerms());
