@@ -77,7 +77,7 @@ public class AllVariantsTreeOptimizer extends AbstractOperationsInRowOptimizer {
         int maxHeight = 0;
         int nexLeafTake = 0;
         for (int currentLevel = 1; currentLevel < levels.size(); currentLevel++) {
-            for (int i = 0; i < orderedLeafs.get(currentLevel) - orderedLeafs.get(currentLevel - 1) * 2; i++) {
+            for (int i = 0; i < levels.get(currentLevel - 1) * 2 - levels.get(currentLevel); i++) {
                 int height = orderedLeafs.get(nexLeafTake++) + currentLevel;
                 if (height > maxHeight) {
                     maxHeight = height;

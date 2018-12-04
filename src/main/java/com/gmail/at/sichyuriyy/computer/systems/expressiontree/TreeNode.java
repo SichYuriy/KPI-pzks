@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class TreeNode {
+    private long id;
     private PolishToken polishToken;
     private TreeNode left;
     private TreeNode right;

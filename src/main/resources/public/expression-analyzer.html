@@ -7,7 +7,9 @@
 <div ng-if="vm.analysisResult">
     <span>Was analyzed: {{vm.analysisResult.expression}}</span><br/>
     <div ng-if="vm.analysisResult.errors.length == 0">No errors were found</div>
-    <div ng-repeat="error in vm.analysisResult.errors">At position {{error.position}}[{{error.tokenValue}}]: {{error.errorDescription}}</div>
+    <div ng-repeat="error in vm.analysisResult.errors">At position {{error.position}}[{{error.tokenValue}}]:
+        {{error.errorDescription}}
+    </div>
     <hr/>
     Polish notation:
     <div>{{vm.analysisResult.polishNotation}}</div>
@@ -22,8 +24,70 @@
 <div ng-show="!vm.hideOptimizedTree" id="optimized-tree" style="width:100%; height: 400px"></div>
 <hr/>
 <div style="min-height: 200px">
-    <button ng-click="vm.getEqualForms()" data-ng-disabled = "!vm.analysisResult || vm.analysisResult.errors.length > 0">Pass brackets</button>
+    <button ng-click="vm.getEqualForms()" data-ng-disabled="!vm.analysisResult || vm.analysisResult.errors.length > 0">
+        Pass brackets
+    </button>
     <div><strong>{{vm.expression}}</strong></div>
     <div ng-repeat="exp in vm.equalForms" style="padding-left: 15px;">{{exp}}</div>
 </div>
-
+<hr/>
+<div style="min-height: 200px">
+    <button ng-click="vm.simulate()" data-ng-disabled="!vm.analysisResult || vm.analysisResult.errors.length > 0">
+        Simulate source expression
+    </button>
+    <label>layersCount<input ng-model="vm.layersCount" class="small-input" /></label>
+    <br/>
+    <label>+<input ng-model="vm.addTime" class="small-input"></label>
+    <label>-<input ng-model="vm.subtractTime" class="small-input"></label>
+    <label>*<input ng-model="vm.multiplyTime" class="small-input"></label>
+    <label>/<input ng-model="vm.divideTime" class="small-input"></label>
+    <label>sin<input ng-model="vm.sinTime" class="small-input"></label>
+    <label>cos<input ng-model="vm.cosTime" class="small-input"></label>
+    <div id="simulation-tree" style="width:100%; height: 400px"></div>
+    <table>
+        <thead>
+        <tr>
+            <th ng-repeat="i in vm.layers">Layer #{{i}}</th>
+            <th>time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="tact in vm.simulationResult.executionHistory.tactHistories">
+            <td ng-repeat="layer in tact.layerHistories">
+                <span ng-if="layer.operation !== ''">{{layer.operation}} ({{layer.effectiveTime | number : 2}}/{{tact.time | number : 2}})</span>
+            </td>
+            <td>{{tact.time | number : 2}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div>base time: {{vm.simulationResult.baseTime | number : 2}}</div>
+    <div>time with layers: {{vm.simulationResult.executionHistory.executionTime | number : 2}}</div>
+    <div>speed up: {{vm.simulationResult.speedUp | number : 2}}</div>
+    <div>busy time: {{vm.simulationResult.busyTime | number : 2}}</div>
+</div>
+<hr/>
+<button ng-click="vm.simulateAll()" data-ng-disabled="!vm.equalForms">
+    Simulate all expressions
+</button>
+<table>
+    <thead>
+    <tr>
+        <th>Expression</th>
+        <th>base time</th>
+        <th>layers time</th>
+        <th>speed up</th>
+        <th>busy time</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="expSimulation in vm.groupSimulationResult">
+        <td>{{expSimulation.expression}}</td>
+        <td>{{expSimulation.simulationResult.baseTime | number : 2}}</td>
+        <td><strong>{{expSimulation.simulationResult.executionHistory.executionTime | number : 2}}</strong></td>
+        <td>{{expSimulation.simulationResult.speedUp | number : 2}}</td>
+        <td>{{expSimulation.simulationResult.busyTime | number : 2}}</td>
+        <td><button ng-click="vm.setSimulationResult(expSimulation.simulationResult)">Show simulation</button></td>
+    </tr>
+    </tbody>
+</table>

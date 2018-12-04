@@ -1,0 +1,18 @@
+table {
+    border: 1px solid black;
+}
+
+td {
+    padding: 3px;
+    border: 1px solid black;
+}
+
+th {
+    padding: 3px;
+    border: 1px solid black;
+}
+
+.small-input {
+    width: 40px;
+    margin: 4px;
+}
