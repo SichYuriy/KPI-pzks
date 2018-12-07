@@ -119,7 +119,7 @@ public class OpenBracketsAnalyzer {
         }
         for (int i = 0; i < token.getDivideExpressions().size(); i++) {
             for (ParenthesisExpression exp:
-                    calculateEqualForms(token.getMultiplyExpressions().get(i))) {
+                    calculateEqualForms(token.getDivideExpressions().get(i))) {
                 token.getDivideExpressions().set(i, exp);
                 result.add(token.makeClone());
             }
