@@ -12,6 +12,7 @@ import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeNode;
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.optimizer.AllVariantsTreeOptimizer;
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.optimizer.TreeOptimizer;
 import com.gmail.at.sichyuriyy.computer.systems.openingbrackets.OpenBracketsAnalyzer;
+import com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxError;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.SyntaxParser;
 import com.gmail.at.sichyuriyy.computer.systems.syntaxanalizator.parserstate.ParserState;
@@ -20,9 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType.*;
