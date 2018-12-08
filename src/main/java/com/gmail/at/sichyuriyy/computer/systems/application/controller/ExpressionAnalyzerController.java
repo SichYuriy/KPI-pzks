@@ -93,8 +93,8 @@ public class ExpressionAnalyzerController {
         return SimulationResultDto.builder()
                 .executionHistory(executionHistory)
                 .root(treeTransformer.toDto(root))
-                .baseTime(baseTime)
-                .speedUp(baseTime / executionHistory.getExecutionTime())
+                .baseTime(baseTime * layersCount)
+                .speedUp(baseTime * layersCount / executionHistory.getExecutionTime())
                 .busyTime(calculateBusyTime(executionHistory))
                 .build();
     }

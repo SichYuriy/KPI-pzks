@@ -53,7 +53,7 @@ public class DynamicConveyor implements Conveyor {
                 layerHistories.add(new LayerHistory("", 0));
             } else {
                 String id = layer.getId() != 0 ? "[" + layer.getId() + "] " : "";
-                layerHistories.add(new LayerHistory(id + layer.getLabel(), operationsTime.get(layer.getType()) / layers.size()));
+                layerHistories.add(new LayerHistory(id + layer.getLabel(), operationsTime.get(layer.getType())));
             }
         }
         double tactTime = layerHistories.stream().mapToDouble(LayerHistory::getEffectiveTime).max().orElse(0);
