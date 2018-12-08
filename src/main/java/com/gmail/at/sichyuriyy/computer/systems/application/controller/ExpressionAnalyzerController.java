@@ -2,7 +2,7 @@ package com.gmail.at.sichyuriyy.computer.systems.application.controller;
 
 import com.gmail.at.sichyuriyy.computer.systems.Expression;
 import com.gmail.at.sichyuriyy.computer.systems.ExpressionReader;
-import com.gmail.at.sichyuriyy.computer.systems.conveyor.DynamicConveyor;
+import com.gmail.at.sichyuriyy.computer.systems.conveyor.StaticConveyor;
 import com.gmail.at.sichyuriyy.computer.systems.conveyor.TaskGenerator;
 import com.gmail.at.sichyuriyy.computer.systems.conveyor.history.ExecutionHistory;
 import com.gmail.at.sichyuriyy.computer.systems.conveyor.history.LayerHistory;
@@ -87,7 +87,7 @@ public class ExpressionAnalyzerController {
         operationsTime.put(DIVIDE, divideTime);
         operationsTime.put(SIN, sinTime);
         operationsTime.put(COS, cosTime);
-        DynamicConveyor dynamicConveyor = new DynamicConveyor(operationsTime, taskGenerator, layersCount);
+        StaticConveyor dynamicConveyor = new StaticConveyor(operationsTime, taskGenerator, layersCount);
         ExecutionHistory executionHistory = dynamicConveyor.run();
         double baseTime = calculateBaseTime(root, operationsTime);
         return SimulationResultDto.builder()

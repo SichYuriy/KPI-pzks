@@ -62,6 +62,9 @@ angular.module('app').controller('ExpressionAnalyzerController', function ($http
     };
 
     vm.simulate = function () {
+        if (!vm.expression) {
+            return;
+        }
         $http.get('/simulate', {
             params: {
                 expression: vm.expression,
@@ -79,7 +82,7 @@ angular.module('app').controller('ExpressionAnalyzerController', function ($http
     };
 
     vm.simulateAll = function () {
-        let allExpressions = [vm.expression];
+        let allExpressions = [];
         allExpressions = allExpressions.concat(vm.equalForms);
         $http.get('/simulate-all', {
             params: {

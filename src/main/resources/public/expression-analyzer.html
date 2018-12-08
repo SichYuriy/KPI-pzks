@@ -1,30 +1,9 @@
-<form ng-submit="vm.analyzeExpression()">
+<form>
     <label for="expression">Input expression to analyze:</label><br/>
     <input type="text" ng-model="vm.expression" id="expression" style="width: 500px">
-    <input type="submit" value="Run"/>
 </form>
-<hr/>
-<div ng-if="vm.analysisResult">
-    <span>Was analyzed: {{vm.analysisResult.expression}}</span><br/>
-    <div ng-if="vm.analysisResult.errors.length == 0">No errors were found</div>
-    <div ng-repeat="error in vm.analysisResult.errors">At position {{error.position}}[{{error.tokenValue}}]:
-        {{error.errorDescription}}
-    </div>
-    <hr/>
-    Polish notation:
-    <div>{{vm.analysisResult.polishNotation}}</div>
-</div>
-<hr/>
-<button ng-click="vm.hideUnoptimizedTree = !vm.hideUnoptimizedTree">show/hide</button>
-<span>Input tree: </span><br/>
-<div ng-show="!vm.hideUnoptimizedTree" id="unoptimized-tree" style="width:100%; height: 400px"></div>
-<hr/>
-<button ng-click="vm.hideOptimizedTree = !vm.hideOptimizedTree">show/hide</button>
-<span>Optimized: </span><br/>
-<div ng-show="!vm.hideOptimizedTree" id="optimized-tree" style="width:100%; height: 400px"></div>
-<hr/>
 <div style="min-height: 200px">
-    <button ng-click="vm.getEqualForms()" data-ng-disabled="!vm.analysisResult || vm.analysisResult.errors.length > 0">
+    <button ng-click="vm.getEqualForms()">
         Pass brackets
     </button>
     <div><strong>{{vm.expression}}</strong></div>
@@ -32,7 +11,7 @@
 </div>
 <hr/>
 <div style="min-height: 200px">
-    <button ng-click="vm.simulate()" data-ng-disabled="!vm.analysisResult || vm.analysisResult.errors.length > 0">
+    <button ng-click="vm.simulate()">
         Simulate source expression
     </button>
     <label>layersCount<input ng-model="vm.layersCount" class="small-input" /></label>
@@ -54,9 +33,9 @@
         <tbody>
         <tr ng-repeat="tact in vm.simulationResult.executionHistory.tactHistories">
             <td ng-repeat="layer in tact.layerHistories">
-                <span ng-if="layer.operation !== ''">{{layer.operation}} ({{layer.effectiveTime | number : 2}}/{{tact.time | number : 2}})</span>
+                <span ng-if="layer.operation !== ''">{{layer.operation}}</span>
             </td>
-            <td>{{tact.time | number : 2}}</td>
+            <td>{{tact.time}}</td>
         </tr>
         </tbody>
     </table>

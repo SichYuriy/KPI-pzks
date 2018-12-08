@@ -7,16 +7,16 @@ import com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType;
 
 import java.util.*;
 
-public class DynamicConveyor implements Conveyor {
+public class StaticConveyor implements Conveyor {
 
     private final Map<PolishTokenType, Double> operationsTime;
     private final TaskGenerator taskGenerator;
 
     private final List<Operation> layers;
 
-    public DynamicConveyor(Map<PolishTokenType, Double> operationsTime,
-                           TaskGenerator taskGenerator,
-                           int layersCount) {
+    public StaticConveyor(Map<PolishTokenType, Double> operationsTime,
+                          TaskGenerator taskGenerator,
+                          int layersCount) {
         this.operationsTime = operationsTime;
         this.taskGenerator = taskGenerator;
         this.layers = new ArrayList<>();
@@ -29,11 +29,24 @@ public class DynamicConveyor implements Conveyor {
     public ExecutionHistory run() {
         ExecutionHistory executionHistory = new ExecutionHistory();
         while (taskGenerator.hasMoreTasks() || !isEmpty()) {
-            Optional<Operation> nextOperation = taskGenerator.takeAnyNext();
-            nextOperation.ifPresent(operation -> layers.set(0, operation));
+            Optional<PolishTokenType> current = getCurrentOperationType();
+            if (current.isPresent()) {
+                taskGenerator.takeNextTypeOf(current.get())
+                        .ifPresent(operation -> layers.set(0, operation));
+            } else {
+                taskGenerator.takeAnyNext()
+                        .ifPresent(operation -> layers.set(0, operation));
+            }
             executionHistory.addTactHistory(runNextTact());
         }
         return executionHistory;
+    }
+
+    private Optional<PolishTokenType> getCurrentOperationType() {
+        return layers.stream()
+                .filter(Objects::nonNull)
+                .findFirst()
+                .map(Operation::getType);
     }
 
     private TactHistory runNextTact() {

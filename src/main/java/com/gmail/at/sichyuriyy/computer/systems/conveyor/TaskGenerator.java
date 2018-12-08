@@ -1,6 +1,7 @@
 package com.gmail.at.sichyuriyy.computer.systems.conveyor;
 
 import com.gmail.at.sichyuriyy.computer.systems.expressiontree.TreeNode;
+import com.gmail.at.sichyuriyy.computer.systems.polishnotation.PolishTokenType;
 
 import java.util.*;
 
@@ -53,6 +54,17 @@ public class TaskGenerator {
         Operation result = availableTasks.get(availableTasks.size() - 1);
         availableTasks.remove(availableTasks.size() - 1);
         return Optional.of(result);
+    }
+
+    public Optional<Operation> takeNextTypeOf(PolishTokenType type) {
+       for (int i = availableTasks.size() - 1; i >=0; i--) {
+           Operation task = availableTasks.get(i);
+           if (task.getType().equals(type)) {
+               availableTasks.remove(i);
+               return Optional.of(task);
+           }
+       }
+       return Optional.empty();
     }
 
     public void finishExecution(Operation operation) {
